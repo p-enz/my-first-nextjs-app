@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Tictactoe from "./pages/tictactoe/tictactoe";
 
 export default function Home() {
   return (
@@ -59,6 +60,7 @@ export default function Home() {
             Documentation
           </a>
         </div>
+        <Tictactoe/>
       </main>
     </div>
   );
