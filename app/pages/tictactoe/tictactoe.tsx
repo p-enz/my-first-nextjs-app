@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./tictactoe.css";
 
 
@@ -9,7 +9,7 @@ export default function Tictactoe() {
 const [board, setBoard] = useState<(string | null)[]> (Array(9).fill(null));
 const [isXTurn, setIsXTurn] = useState(true);
 
-const WIN_CONDITIONS :number[][] = [
+const WIN_PATTERNS :number[][] = [
   [0, 1, 2], // rows
   [3, 4, 5],
   [6, 7, 8],
@@ -19,6 +19,22 @@ const WIN_CONDITIONS :number[][] = [
   [0, 4, 8], // diagonals
   [2, 4, 6]
 ]
+
+//Hooks: 
+useEffect(() => {
+  const winner = getWinner(board);
+  if (winner){
+    alert(`Player ${winner} wins!`);
+  }
+  else if (board.every(square => square !== null)) {
+    alert("It's a draw!");
+    
+  }
+}, [board])
+
+//Functions:
+
+
 
 function handleClickForSquare(squareIndex:number) {
     setBoard((prevBoard) => {
@@ -32,7 +48,20 @@ function handleClickForSquare(squareIndex:number) {
     setIsXTurn((previousIsXTurn) => !previousIsXTurn);
   }
 
-
+/*
+* @param board - the current state of board represented as an array of strings (either "X", "O", or null)
+* @return "X" or "0" depinging on who won, or null if there is no winner yet
+*/
+function getWinner (board:(string | null)[]) : "X" | "O" | null {
+  for (const pattern of WIN_PATTERNS) {
+    const [a, b, c] = pattern;
+    
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      return board[a] as "X" | "O";
+    }
+  }
+  return null;
+}
 
   return (
     <section className="field">
